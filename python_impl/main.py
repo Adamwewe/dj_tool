@@ -5,29 +5,55 @@ from pathlib import Path
 
 
 import os
-import torchaudio
+import torch
+from torch.utils.data import DataLoader
 from typing import List
 
 from make_spec import SpecLoader
-from make_dataset import createDataset
-from extract_audio_features import featExtractor, trainModel, FeatureExtractor, feature_extractor
+from make_dataset import createDataset, MusicLoader
+from extract_audio_features import featExtractor, trainModel, FeatureExtractor
 from make_dataset import makeLabel
+from CNN import CNN, train, evaluate
 
 import time
 
-
+EPOCHS = 32
+os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
 if __name__ == "__main__":
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     path : str = "C:/Users/6090249/Desktop/Learning/RustyMusic/Playlist"
     dataset, label2id, id2label = createDataset(path)
-
+    n_classes = len(label2id.keys())
     
     start = time.time()
-    for path, label in dataset.items():
-        wf, sr = torchaudio.load(path)
-        # fe = FeatureExtractor(sample_rate=sr)
-        # yes = fe.make_features(wf)
-        yes = feature_extractor(sr, wf)
+    music = []
+    labels = []
+
+
+
+    music = MusicLoader(list(dataset.keys()), 
+                        list(dataset.values()))
+    # for path, label in dataset.items():
+
+        # music.append(feature_extractor(sr, wf))
+
+        # label.append(label)
+
+    train_dataloader = DataLoader(music, batch_size=32, shuffle=True)
+    val_dataloader = DataLoader(music, batch_size=32)
+
+    model = CNN(num_classes=n_classes, num_layers=2, input_size=128, d_model=256, nhead=4, device=device)
+
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+    for epoch in range(EPOCHS):
+        train_loss, train_acc = train(model, train_dataloader, criterion, optimizer, device)
+        val_loss, val_acc = evaluate(model, val_dataloader, criterion, device)
+        print(f"Epoch[{((epoch)/EPOCHS) * 100}] %, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}")
     end = time.time()
     breakpoint()
     

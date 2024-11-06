@@ -24,7 +24,7 @@ impl Crawler {
         let mut collect : Vec<String> = Vec::new();
 
         for file in items.into_iter().filter_map(|file| file.ok()) {
-            if file.metadata().unwrap().is_file(){
+            if file.metadata().unwrap().is_file(){  //what the fuck is this
             collect.push(file.path()
                         .display()
                         .to_string());
