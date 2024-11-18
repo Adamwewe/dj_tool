@@ -1,17 +1,3 @@
-# Rusty Music
+# Dj Tool
 
-EWA LETS GOOOOO
-
-```rust
-
-mod folder_crawler;
-mod parse_path;
-
-use folder_crawler::Crawler;
-use parse_path::FolderParser;
-
-let parsed = FolderParser::parser();
-let items = Crawler::new(parsed.path)
-    .crawl();
-
-```
+Toying around with convnet optimization in this one, play around with main.py entry point, lots still to fix.
