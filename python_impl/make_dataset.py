@@ -13,7 +13,7 @@ import random
 class MusicLoader(Dataset):
         def __init__(self, path_list,
                     labels, transform: bool=False, 
-                    rsr=16_00, seconds=60):
+                    rsr=16_000, seconds=30):
               
                 self.path_list = path_list
                 self.transform = transform
