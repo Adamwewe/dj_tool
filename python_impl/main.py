@@ -13,11 +13,11 @@ from make_spec import SpecLoader
 from make_dataset import createDataset, MusicLoader
 from extract_audio_features import featExtractor, trainModel, FeatureExtractor
 from make_dataset import makeLabel
-from CNN import CNN, train, evaluate
+from embeddings import CNN, train, evaluate
 
 import time
 
-EPOCHS = 32
+EPOCHS = 64
 os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 os.environ["TORCH_USE_CUDA_DSA"] = "1"
 
@@ -25,6 +25,8 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     path : str = "C:/Users/6090249/Desktop/Learning/RustyMusic/Playlist"
+    save_path = "C:/Users/6090249/Desktop/Learning/RustyMusic/models"
+    # path = "E:/Track selections/New sorting"
     dataset, label2id, id2label = createDataset(path)
     n_classes = len(label2id.keys())
     
@@ -47,7 +49,8 @@ if __name__ == "__main__":
 
     model = CNN(num_classes=n_classes, num_layers=2, input_size=128, d_model=256, nhead=4, device=device)
 
-    criterion = torch.nn.CrossEntropyLoss()
+    # criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.TripletMarginLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     for epoch in range(EPOCHS):

@@ -13,7 +13,7 @@ import random
 class MusicLoader(Dataset):
         def __init__(self, path_list,
                     labels, transform: bool=False, 
-                    rsr=16_000, seconds=30):
+                    rsr=16_000, seconds=60):
               
                 self.path_list = path_list
                 self.transform = transform
@@ -61,16 +61,17 @@ def createDataset(
         dirs : List[str] = [items for items in os.walk(path)]
         dataset : Dict[str, str] = {}  #for now trivial with no implementation of nested playlists
         tracks = []
-        #TODO : implement a ghraph with nested playlists later.
+        #TODO : implement a graph with nested playlists later.
         for path, subdirectory, files in dirs:
                 if subdirectory:
                         dir_stack = deque(subdirectory)
 
                 for file in files:
-                        tracks.append(file)                  
-                        dataset[path.replace("\\","/") + "/" + file] = dir_stack[0]
+                        tracks.append(file) 
+                        if dir_stack:
+                                dataset[path.replace("\\","/") + "/" + file] = dir_stack[0]
 
-                if not subdirectory:
+                if not subdirectory and dir_stack:
                         dir_stack.popleft()
 
         ### update labels here to id

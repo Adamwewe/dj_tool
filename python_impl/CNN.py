@@ -103,7 +103,6 @@ def train(model, dataloader,
         loss = criterion(output, labels)
         loss.backward()
         optimizer.step()
-
         running_loss += loss.item()
         _, predicted = torch.max(output.data, 1)
         running_accuracy += (predicted == labels).sum().item()
