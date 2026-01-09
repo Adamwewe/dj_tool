@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 walkdir = "2"
-symphonia = "0.5.3"
+symphonia = { version = "0.5", features = ["mp3"] }
 id3 = "1.7.0"

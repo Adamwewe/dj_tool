@@ -9,8 +9,7 @@ use folder_crawler::Crawler;
 use parse_path::FolderParser;
 
 
-use crate::encoder::parseToBytes;
-use crate::encoder::EncodeTrack;
+use crate::encoder::generate_waveform;
 
 
 
@@ -20,9 +19,11 @@ fn main() {
     let items = Crawler::new(parsed.path)
         .crawl();
     
-    items.iter()
-    .map(|x| EncodeTrack(&x))
+    let waves = items.iter()
+    .map(|x| generate_waveform(&x, 1000))
     .collect::<Vec<_>>();
+
+    println!("items: {:?}", waves);
 
 /*
 
