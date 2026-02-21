@@ -14,26 +14,26 @@ pub struct WaveformData {
     pub samples_per_peak: usize,
 }
 
-pub fn generate_waveform(
+pub async fn generate_waveform(
     path: &str,
     target_width: usize, // How many points you want in your waveform
 ) -> Result<WaveformData, Box<dyn std::error::Error>> {
     
-    // 1. Open and probe the file
     let file = File::open(path)?;
     let mss = MediaSourceStream::new(Box::new(file), Default::default());
     
+    //TODO: Extension needs to be refactored
     let mut hint = Hint::new();
     hint.with_extension("mp3");
     let format_opts = FormatOptions::default();
     let metadata_opts = MetadataOptions::default();
-    
+   
+    //TODO: Default probe needs
     let probed = symphonia::default::get_probe()
         .format(&hint, mss, &format_opts, &metadata_opts)?;
     
     let mut format = probed.format;
     
-    // 2. Get the default track
     let track = format.default_track()
         .ok_or("no default track")?;
     
@@ -41,24 +41,22 @@ pub fn generate_waveform(
     let sample_rate = track.codec_params.sample_rate
         .ok_or("unknown sample rate")?;
     
-    // 3. Create decoder
     let mut decoder = symphonia::default::get_codecs()
         .make(&track.codec_params, &DecoderOptions::default())?;
     
-    // 4. Decode all samples
     let mut all_samples = Vec::new();
     
     loop {
         let packet = match format.next_packet() {
             Ok(packet) => packet,
-            Err(_) => break, // End of stream
+            Err(_) => break, // End stream if error encountered
         };
-        
-        // Only decode packets for our track
-        if packet.track_id() != track_id {
-            continue;
-        }
-        
+
+        // // Only decode packets for our track
+        // if packet.track_id() != track_id {
+        //     continue;
+        // }
+ 
         // Decode the packet
         match decoder.decode(&packet) {
             Ok(decoded) => {
@@ -70,14 +68,11 @@ pub fn generate_waveform(
         }
     }
     
-    // 5. Calculate samples per peak
     let samples_per_peak = all_samples.len() / target_width;
     
-    // 6. Generate peaks by chunking samples
     let peaks: Vec<f32> = all_samples
         .chunks(samples_per_peak.max(1))
         .map(|chunk| {
-            // Get the maximum absolute value in this chunk
             chunk.iter()
                 .map(|&s| s.abs())
                 .fold(0.0f32, f32::max)
@@ -97,7 +92,7 @@ pub fn generate_waveform(
     wave
 }
 
-// Helper function to extract samples from AudioBufferRef
+//from Claude
 fn extract_samples(decoded: &AudioBufferRef) -> Vec<f32> {
     match decoded {
         AudioBufferRef::F32(buf) => {

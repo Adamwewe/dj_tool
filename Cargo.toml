@@ -9,3 +9,5 @@ edition = "2021"
 walkdir = "2"
 symphonia = { version = "0.5", features = ["mp3"] }
 id3 = "1.7.0"
+tokio = {version = "1.49.0", features = ["macros", "rt-multi-thread"]}
+lldb = "0.0.12"

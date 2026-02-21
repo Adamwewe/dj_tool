@@ -13,18 +13,22 @@ use crate::encoder::generate_waveform;
 
 
 
-fn main() {
+#[tokio::main]
+async fn main() {
 
     let parsed = FolderParser::parser();
     let items = Crawler::new(parsed.path)
         .crawl();
+     
+    let waves = items
+        .iter()
+        .map(async move |x| generate_waveform(&x, 1000).await)
+        .collect::<Vec<_>>();
     
-    let waves = items.iter()
-    .map(|x| generate_waveform(&x, 1000))
-    .collect::<Vec<_>>();
-
-    println!("items: {:?}", waves);
-
+    for item in waves {
+        println!("items: {:?}", item.await);
+    }
+}
 /*
 
 steps:
@@ -46,4 +50,3 @@ steps:
 //     let encoded  : Vec<u8> = pcmEncoder(bytes.unwrap());
 
 //     println!("{:?}", encoded);
-}
