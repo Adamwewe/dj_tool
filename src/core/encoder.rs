@@ -5,6 +5,10 @@ use symphonia::core::io::MediaSourceStream;
 use symphonia::core::meta::MetadataOptions;
 use symphonia::core::probe::Hint;
 use std::fs::File;
+use pyo3;
+
+
+use crate::folder_crawler::Crawler;
 
 #[derive(Debug)]
 pub struct WaveformData {
@@ -15,16 +19,17 @@ pub struct WaveformData {
 }
 
 pub async fn generate_waveform(
-    path: &str,
-    target_width: usize, // How many points you want in your waveform
+    item_obj: &Crawler,
+    target_width: usize, // kept at 500 for initial benchmark
 ) -> Result<WaveformData, Box<dyn std::error::Error>> {
-    
+    let (path, format) = (&item_obj.path, &item_obj.format);
+
     let file = File::open(path)?;
     let mss = MediaSourceStream::new(Box::new(file), Default::default());
     
     //TODO: Extension needs to be refactored
     let mut hint = Hint::new();
-    hint.with_extension("mp3");
+    hint.with_extension(format);
     let format_opts = FormatOptions::default();
     let metadata_opts = MetadataOptions::default();
    
@@ -37,7 +42,6 @@ pub async fn generate_waveform(
     let track = format.default_track()
         .ok_or("no default track")?;
     
-    let track_id = track.id;
     let sample_rate = track.codec_params.sample_rate
         .ok_or("unknown sample rate")?;
     
@@ -52,11 +56,6 @@ pub async fn generate_waveform(
             Err(_) => break, // End stream if error encountered
         };
 
-        // // Only decode packets for our track
-        // if packet.track_id() != track_id {
-        //     continue;
-        // }
- 
         // Decode the packet
         match decoder.decode(&packet) {
             Ok(decoded) => {

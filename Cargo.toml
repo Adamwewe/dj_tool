@@ -1,13 +1,21 @@
 [package]
-name = "RustyMusic"
-version = "0.1.0"
-edition = "2021"
+name = "dj_tool"
+version = "0.2.0"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+# for pyo3
+[lib]
+name = "dj_tool"
+path = "src/core/lib.rs"
+crate-type = ["cdylib"]
+
+
 [dependencies]
 walkdir = "2"
-symphonia = { version = "0.5", features = ["mp3"] }
+symphonia = { version = "0.5", features = ["mp3", "aiff", "flac", "wav"] }
+pyo3 = "0.28.2"
 id3 = "1.7.0"
 tokio = {version = "1.49.0", features = ["macros", "rt-multi-thread"]}
 lldb = "0.0.12"

@@ -1,9 +1,7 @@
-// use std::env::args;
-// use audiotags::{AnyTag, AudioTagEdit, Id3v2Tag}; // audio conversion crate
-// use glob::glob;
-mod folder_crawler;
-mod parse_path;
-mod encoder;
+mod core;
+use core::folder_crawler;
+use core::parse_path;
+use core::encoder;
 
 use folder_crawler::Crawler;
 use parse_path::FolderParser;
@@ -19,7 +17,6 @@ async fn main() {
     let parsed = FolderParser::parser();
     let items = Crawler::new(parsed.path)
         .crawl();
-     
     let waves = items
         .iter()
         .map(async move |x| generate_waveform(&x, 1000).await)
