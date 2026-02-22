@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# Dj Tool
+# dj_tool
 
 Full README to come one day, for now enjoy this
 
