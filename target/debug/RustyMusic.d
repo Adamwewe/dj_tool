@@ -1,0 +1,1 @@
+C:\Users\6090249\Desktop\Learning\RustyMusic\target\debug\RustyMusic.exe: C:\Users\6090249\Desktop\Learning\RustyMusic\src\encoder.rs C:\Users\6090249\Desktop\Learning\RustyMusic\src\folder_crawler.rs C:\Users\6090249\Desktop\Learning\RustyMusic\src\main.rs C:\Users\6090249\Desktop\Learning\RustyMusic\src\parse_path.rs

@@ -1,0 +1,10 @@
+C:\Users\6090249\Desktop\Learning\RustyMusic\target\debug\deps\crc32fast-01ec9281513231c9.rmeta: C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\lib.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\baseline.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\combine.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\specialized\mod.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\table.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\specialized\pclmulqdq.rs
+
+C:\Users\6090249\Desktop\Learning\RustyMusic\target\debug\deps\crc32fast-01ec9281513231c9.d: C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\lib.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\baseline.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\combine.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\specialized\mod.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\table.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\specialized\pclmulqdq.rs
+
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\lib.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\baseline.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\combine.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\specialized\mod.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\table.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\crc32fast-1.3.2\src\specialized\pclmulqdq.rs:

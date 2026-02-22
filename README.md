@@ -1,16 +1,16 @@
-# DJ Tool
+<<<<<<< HEAD
+# Dj Tool
 
-Small track classification tool I am currently building for fun. Stack is in Rust (For crawling + melspectrogram generation) and Python (for ML). The Master branch is a few commits behind and not in use for now. Please refer to the baseline branch for current efforts in progress
-```rust
+Full README to come one day, for now enjoy this
 
-mod folder_crawler;
-mod parse_path;
+## Usage
 
-use folder_crawler::Crawler;
-use parse_path::FolderParser;
-
-let parsed = FolderParser::parser();
-let items = Crawler::new(parsed.path)
-    .crawl();
+Building docs to come
 
 ```
+cargo run 
+```
+
+Folder with tracks should be entered, this will be changed after we wrap everything in typer.
+For now main dev is done in Rust until PyO3 translation layer is shipped
+

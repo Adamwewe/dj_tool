@@ -1,0 +1,10 @@
+C:\Users\6090249\Desktop\Learning\RustyMusic\target\debug\deps\symphonia_utils_xiph-165c0f10da740aac.rmeta: C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\lib.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\mod.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\metadata.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\vorbis\mod.rs
+
+C:\Users\6090249\Desktop\Learning\RustyMusic\target\debug\deps\libsymphonia_utils_xiph-165c0f10da740aac.rlib: C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\lib.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\mod.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\metadata.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\vorbis\mod.rs
+
+C:\Users\6090249\Desktop\Learning\RustyMusic\target\debug\deps\symphonia_utils_xiph-165c0f10da740aac.d: C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\lib.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\mod.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\metadata.rs C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\vorbis\mod.rs
+
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\lib.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\mod.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\flac\metadata.rs:
+C:\Users\6090249\.cargo\registry\src\index.crates.io-6f17d22bba15001f\symphonia-utils-xiph-0.4.0\src\vorbis\mod.rs:
