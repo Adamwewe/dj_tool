@@ -2,18 +2,12 @@ mod core;
 use core::folder_crawler;
 use core::parse_path;
 use core::encoder;
-
-use folder_crawler::Crawler;
-use parse_path::FolderParser;
-
-
 use crate::encoder::generate_waveform;
 
 
 
 #[tokio::main]
 async fn main() {
-
     let parsed = FolderParser::parser();
     let items = Crawler::new(parsed.path)
         .crawl();
