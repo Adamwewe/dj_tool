@@ -14,6 +14,7 @@ mod decoding_backend {
     use pyo3::prelude::*;
     use pyo3::exceptions::PyTypeError;
     use numpy::{IntoPyArray, PyArray1};
+    use pyo3::types::PyList;
 
     use crate::FolderParser;
     use crate::Crawler;
@@ -26,7 +27,7 @@ mod decoding_backend {
     }
 
     #[pyo3::pyfunction]
-    pub fn folder_parser_wrapper() -> PyResult<Vec<Crawler>> {
+    pub fn get_tracks() -> PyResult<Vec<Crawler>> {
     let parsed = FolderParser::parser(); 
     let items = Crawler::new(parsed.path)
         .crawl();
@@ -43,20 +44,27 @@ mod decoding_backend {
         py: Python<'py>, 
         crawler_obj: Vec<Crawler>,
         target_width : usize,
-    ) -> PyResult<Bound<'py, PyArray1<f32>>> {
+    ) -> PyResult<Bound<'py, PyList>> {
         //TODO: parallelize between folder crawling and getting waveforms, for now we do lazy loop
-        let waves = tokio::runtime::Runtime::new()
+        let array = PyList::empty(py);
+
+        tokio::runtime::Runtime::new()
         .unwrap()
         .block_on(async {
-            let mut result = Vec::new();
-            for x in &crawler_obj {
-                if let Ok(wave) = generate_waveform(&x, target_width).await {
-                result.extend(wave.peaks);
+            for i in crawler_obj {
+                match generate_waveform(&i, target_width).await {
+                        Ok(wave) => {
+                            let waves = PyArray1::from_vec(py, wave.peaks);
+                            array.append(waves).unwrap();
+                        },
+                        Err(e) => eprintln!("Error: {}", e),
                 }
+                // if let Ok(wave) = generate_waveform(&x, target_width).await {
+                // println!("{:?}", wave.peaks.len());
+                // result.extend(wave.peaks);
             }
-            result
         });
-        Ok(PyArray1::from_vec(py, waves)) 
+        Ok(array)
     }
 
 
