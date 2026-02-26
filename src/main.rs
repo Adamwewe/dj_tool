@@ -10,12 +10,12 @@ async fn main() {
     let parsed = FolderParser::parser();
     let items = Crawler::new(parsed.path)
         .crawl();
-    let waves = items
-        .iter()
-        .map(async move |x| generate_waveform(&x, 1000).await)
-        .collect::<Vec<_>>();
- 
-    for item in waves {
-        println!("items: {:?}", item.await);
-    }
+    // let waves = items
+    //     .iter()
+    //     .map(async move |x| generate_waveform(&x, 1000).await)
+    //     .collect::<Vec<_>>();
+    //
+    // for item in waves {
+    //     println!("items: {:?}", item.await);
+    // }
 }

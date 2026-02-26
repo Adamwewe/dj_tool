@@ -47,7 +47,7 @@ mod decoding_backend {
     ) -> PyResult<Bound<'py, PyList>> {
         //TODO: parallelize between folder crawling and getting waveforms, for now we do lazy loop
         let array = PyList::empty(py);
-
+        //TODO:try non async, see if that fixes bug
         tokio::runtime::Runtime::new()
         .unwrap()
         .block_on(async {
@@ -59,9 +59,6 @@ mod decoding_backend {
                         },
                         Err(e) => eprintln!("Error: {}", e),
                 }
-                // if let Ok(wave) = generate_waveform(&x, target_width).await {
-                // println!("{:?}", wave.peaks.len());
-                // result.extend(wave.peaks);
             }
         });
         Ok(array)
@@ -70,6 +67,29 @@ mod decoding_backend {
 
 
 
+// #[pyo3::pyfunction]
+//     pub fn get_streams<'py>(
+//         py: Python<'py>, 
+//         crawler_obj: Vec<Crawler>,
+//         target_width : usize,
+//     ) -> PyResult<Bound<'py, PyList>> {
+//         //TODO: parallelize between folder crawling and getting waveforms, for now we do lazy loop
+//         let array = PyList::empty(py);
+//         //TODO:try non async, see if that fixes bug
+//             for i in crawler_obj {
+//                 match generate_waveform(&i, target_width){
+//                     Ok(wave) => {
+//                             let waves = PyArray1::from_vec(py, wave.peaks);
+//                             array.append("ee").unwrap();
+//                         },
+//                         Err(e) => eprintln!("Error: {}", e),
+//                 }
+//                 // if let Ok(wave) = generate_waveform(&x, target_width).await {
+//                 // println!("{:?}", wave.peaks.len());
+//                 // result.extend(wave.peaks);
+//             }
+//         Ok(array)
+//     }
 
 
 
