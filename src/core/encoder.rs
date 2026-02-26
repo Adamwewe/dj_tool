@@ -5,10 +5,8 @@ use symphonia::core::io::MediaSourceStream;
 use symphonia::core::meta::MetadataOptions;
 use symphonia::core::probe::Hint;
 use std::fs::File;
-use pyo3;
 
-
-use crate::folder_crawler::Crawler;
+use crate::Crawler;
 
 #[derive(Debug)]
 pub struct WaveformData {
@@ -87,7 +85,6 @@ pub async fn generate_waveform(
         samples_per_peak,
     });
 
-    println!("{:?}", wave);
     wave
 }
 

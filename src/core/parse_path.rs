@@ -1,13 +1,12 @@
 use std::io;
 
+//TODO: think about how this would work with typer
 pub struct FolderParser{
     pub path : String
 }
 
 impl FolderParser {
-    pub fn parser() -> Self 
-    // TODO: add regex robustness in other method?? Some exception hadnling structure would be nice as well
-    {
+    pub fn parser() -> Self {
         
     println!("Please enter folder name: ");
 
@@ -22,7 +21,7 @@ impl FolderParser {
         .expect("invalid input");
         
         Self {
-            path : path
+            path
         }
     }
 }

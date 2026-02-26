@@ -1,17 +1,18 @@
-use std::collections::HashMap;
-use std::fs;
-// use std::ops::Deref;
+use pyo3::prelude::*;
 use walkdir::WalkDir;
 
-#[derive(Clone, Debug)]
+#[pyclass]
+#[derive(FromPyObject)]
 pub struct Crawler{
+    #[pyo3(get)]
     pub path : String,
+    #[pyo3(get)]
     pub format : String,
 }
 
 impl Crawler {
-    pub fn new(path : String) -> Self {
-        Self{path: path,
+    pub fn new(p : String) -> Self {
+        Self{path: p,
         format: String::new()}
     }
 
@@ -37,7 +38,8 @@ impl Crawler {
     }
         collect 
     }
-    fn get_extension(&mut self, path: &String) ->  String {
+
+    fn get_extension(&mut self, path: &str) ->  String {
         let split_path = path.split(".").collect::<Vec<_>>();
         let extension_index = split_path.len() - 1;
         let extension = &split_path[extension_index];
