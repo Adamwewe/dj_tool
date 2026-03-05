@@ -16,7 +16,7 @@ pub struct WaveformData {
     pub samples_per_peak: usize,
 }
 
-pub async fn generate_waveform(
+pub async fn decode_audio(
     item_obj: &Crawler,
     target_width: usize, // kept at 500 for initial benchmark
 ) -> Result<WaveformData, Box<dyn std::error::Error>> {
@@ -46,13 +46,17 @@ pub async fn generate_waveform(
     let mut decoder = symphonia::default::get_codecs()
         .make(&track.codec_params, &DecoderOptions::default())?;
     
-    let mut all_samples = Vec::new();
+    let mut all_samples : Vec<f32> = Vec::new();
     
     loop {
         let packet = match format.next_packet() {
             Ok(packet) => packet,
             Err(_) => break, // End stream if error encountered
         };
+        
+        let decoded = decoder.decode(&packet)?;
+        let spec = &decoded.spec();
+        let duration = decoded.capacity();
 
         // Decode the packet
         match decoder.decode(&packet) {

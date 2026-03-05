@@ -1,7 +1,9 @@
 //entry point for pyo3
 pub mod folder_crawler;
 pub mod parse_path;
-pub mod encoder;
+
+pub mod audio;
+pub mod spectrogram;
 
 use parse_path::FolderParser;
 use folder_crawler::Crawler;
@@ -18,7 +20,7 @@ mod decoding_backend {
 
     use crate::FolderParser;
     use crate::Crawler;
-    use crate::encoder::generate_waveform;
+    use crate::audio::decoder::decode_audio;
 
     #[pyo3::pyfunction]
     pub fn hello() -> PyResult<String> {
@@ -52,9 +54,10 @@ mod decoding_backend {
         .unwrap()
         .block_on(async {
             for i in crawler_obj {
-                match generate_waveform(&i, target_width).await {
+                match decode_audio(&i.path) {
                         Ok(wave) => {
-                            let waves = PyArray1::from_vec(py, wave.peaks);
+                            let (samples, sample_rate, channels) = wave;
+                            let waves = PyArray1::from_vec(py, samples);
                             array.append(waves).unwrap();
                         },
                         Err(e) => eprintln!("Error: {}", e),
