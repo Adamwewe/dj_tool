@@ -7,8 +7,62 @@ pub mod spectrogram;
 
 use parse_path::FolderParser;
 use folder_crawler::Crawler;
+use pyo3::prelude::*;
+use numpy::{IntoPyArray, PyArray2};
+
+use audio::AudioStream;
 
 use std::fmt;
+
+fn vec2d_to_numpy<'py>(
+    py: Python<'py>,
+    data: Vec<Vec<f32>>
+) -> PyResult<Bound<'py, PyArray2<f32>>> {
+    let rows = data.len();
+    let cols = if rows > 0 {data[0].len()} else{0};
+    let flat = data.into_iter().flatten().collect();
+
+    Ok(
+        numpy::ndarray::Array2::from_shape_vec((rows, cols), flat)
+        .map_err(|e|
+            pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))?
+            .into_pyarray(py)
+    )
+}
+
+
+fn block_on<F, T>()(f: F) -> PyResult<T>
+    where
+        F: std::future::Future<Output = Result<T, Box<dyn std::error::Error + send + Sync>>,
+    {
+        
+    }
+
+
+#[pyfunction]
+#[pyo3(signature = (path, fft_size=2048, hop_size=512, to_db=true))]
+async fn get_spectrogram<'py>(
+    py: Python<'py>,
+    path: &str,
+    fft_size: usize,
+    hop_size: usize,
+    to_db: bool,
+) -> PyResult<Bound<'py, PyArray2<f32>>> {
+    
+    let mut audio : Result<AudioStream, Box<>> = AudioStream::from_file(path).await?
+        .map_err(|e|
+            pyo3::exceptions::PyRuntimeError::new_err(e.to_string()))?;
+            audio.to_mono();
+
+}
+
+
+
+
+
+
+
+
 
 #[pyo3::pymodule] 
 mod decoding_backend {
@@ -45,7 +99,6 @@ mod decoding_backend {
     pub fn get_streams<'py>(
         py: Python<'py>, 
         crawler_obj: Vec<Crawler>,
-        target_width : usize,
     ) -> PyResult<Bound<'py, PyList>> {
         //TODO: parallelize between folder crawling and getting waveforms, for now we do lazy loop
         let array = PyList::empty(py);
@@ -54,7 +107,7 @@ mod decoding_backend {
         .unwrap()
         .block_on(async {
             for i in crawler_obj {
-                match decode_audio(&i.path) {
+                match decode_audio(&i.path).await {
                         Ok(wave) => {
                             let (samples, sample_rate, channels) = wave;
                             let waves = PyArray1::from_vec(py, samples);

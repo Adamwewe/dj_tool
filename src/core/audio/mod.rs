@@ -10,8 +10,8 @@ pub struct AudioStream {
 }
 
 impl AudioStream {
-    pub fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
-        let (samples, sample_rate, channels) = decoder::decode_audio(path)?;
+    pub async fn from_file(path: &str) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
+        let (samples, sample_rate, channels) = decoder::decode_audio(path).await?;
         Ok(Self {
             samples,
             sample_rate,

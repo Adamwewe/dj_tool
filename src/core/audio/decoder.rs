@@ -6,14 +6,22 @@ use symphonia::core::meta::MetadataOptions;
 use symphonia::core::probe::Hint;
 use std::fs::File;
 
-pub fn decode_audio(
+pub async fn decode_audio(
     path: &str,
-) -> Result<(Vec<f32>, u32, u16), Box<dyn std::error::Error>> {
+) -> Result<(Vec<f32>, u32, u16), Box<dyn std::error::Error + Send + Sync>> {
+    let path_owned = path.to_string();
+    tokio::task::spawn_blocking(move || decode_audio_sync(&path_owned)).await?
+}
+
+pub fn decode_audio_sync(
+    path: &str,
+) -> Result<(Vec<f32>, u32, u16), Box<dyn std::error::Error + Send + Sync>> {
     let file = File::open(path)?;
     let mss = MediaSourceStream::new(Box::new(file), Default::default());
 
     let mut hint = Hint::new();
-    if let Some(ext) = std::path::Path::new(path).extension().and_then(|e| e.to_str()) {
+    if let Some(ext) = std::path::Path::new(path).extension()
+        .and_then(|extension| extension.to_str()) {
         hint.with_extension(ext);
     }
 
@@ -34,7 +42,8 @@ pub fn decode_audio(
         .make(&track.codec_params, &DecoderOptions::default())?;
 
     let mut all_samples: Vec<f32> = Vec::new();
-
+    
+    //open audio stream
     loop {
         let packet = match format.next_packet() {
             Ok(p) => p,
@@ -56,7 +65,7 @@ pub fn decode_audio(
         let mut sample_buf = SampleBuffer::<f32>::new(duration as u64, spec);
         sample_buf.copy_interleaved_ref(decoded);
 
-        // Keep interleaved samples — downmixing happens in AudioData::to_mono()
+        // Keep interleaved samples for file conversion — downmixing happens in AudioData::to_mono()
         all_samples.extend_from_slice(sample_buf.samples());
     }
 
